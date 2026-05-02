@@ -72,6 +72,17 @@
     to { transform: rotate(1turn); }
 }
 
+@keyframes contactFocus {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: inset 0 0 20px rgba(201,184,150,0.12), 0 8px 18px rgba(0,0,0,0.25);
+    }
+    45% {
+        transform: scale(1.025);
+        box-shadow: inset 0 0 26px rgba(242,213,138,0.28), 0 0 0 4px rgba(242,213,138,0.34), 0 12px 24px rgba(0,0,0,0.3);
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -199,6 +210,14 @@ body {
 .services-border-light > * {
     position: relative;
     z-index: 1;
+}
+
+.contact-box {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact-box--highlight {
+    animation: contactFocus 1.8s ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {

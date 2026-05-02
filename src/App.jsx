@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import Overview from "./Components/OverView"
 import BusinessCapabilities from "./Components/BusinessCapabilities"
 import Vission from "./Components/Vission"
@@ -7,31 +8,86 @@ import MainLayout from "./Components/MainLayout"
 import Grid from "./Components/Grid"
 import Footer from "./Components/Footer"
 import IntroSplash from "./Components/IntroSplash"
-function App() {
+import NavBar from "./Components/NavBar"
+import AboutPage from "./Components/AboutPage"
+import ProductsPage from "./Components/ProductsPage"
+import ContactPage from "./Components/ContactPage"
+
+const HomePage = () => {
   return (
-    <> 
-    <IntroSplash />
-    <MainLayout>
-      <Layout>
-        <div className="site-reveal">
-          <Header />
-        </div>
-        <Grid>
+    <Grid>
+      <div className="site-reveal site-reveal--delay-1">
+        <Overview />
+      </div>
+      <div className="site-reveal site-reveal--delay-2">
+        <BusinessCapabilities />
+      </div>
+      <div className="site-reveal site-reveal--delay-3">
+        <Vission />
+      </div>
+    </Grid>
+  )
+}
+
+function App() {
+  const [activePage, setActivePage] = useState("home")
+  const [highlightContact, setHighlightContact] = useState(false)
+  const contactRef = useRef(null)
+
+  useEffect(() => {
+    if (activePage !== "contact" || !contactRef.current) {
+      return
+    }
+
+    contactRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
+    contactRef.current.focus({ preventScroll: true })
+    setHighlightContact(true)
+
+    const highlightTimer = window.setTimeout(() => {
+      setHighlightContact(false)
+    }, 1800)
+
+    return () => window.clearTimeout(highlightTimer)
+  }, [activePage])
+
+  const renderPage = () => {
+    if (activePage === "about") {
+      return <AboutPage />
+    }
+
+    if (activePage === "products") {
+      return <ProductsPage />
+    }
+
+    if (activePage === "contact") {
+      return (
+        <ContactPage
+          contactRef={contactRef}
+          highlighted={highlightContact}
+        />
+      )
+    }
+
+    return <HomePage />
+  }
+
+  return (
+    <>
+      <IntroSplash />
+      <MainLayout>
+        <Layout>
+          <div className="site-reveal">
+            <Header />
+          </div>
           <div className="site-reveal site-reveal--delay-1">
-            <Overview />
+            <NavBar activePage={activePage} onNavigate={setActivePage} />
           </div>
-          <div className="site-reveal site-reveal--delay-2">
-            <BusinessCapabilities />
+          {renderPage()}
+          <div className="site-reveal site-reveal--delay-4">
+            <Footer />
           </div>
-          <div className="site-reveal site-reveal--delay-3">
-            <Vission /> 
-          </div>
-        </Grid>
-        <div className="site-reveal site-reveal--delay-4">
-          <Footer />
-        </div>
-      </Layout>
-    </MainLayout>
+        </Layout>
+      </MainLayout>
 
     </>
   )
