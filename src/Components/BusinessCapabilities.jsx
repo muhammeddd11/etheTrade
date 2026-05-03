@@ -52,6 +52,10 @@ const BusinessCapabilities = () => {
         <img
           src={goldenTouch}
           alt="Strategic business development"
+          width="600"
+          height="306"
+          loading="lazy"
+          decoding="async"
           className="reference-image art-drift h-[180px] w-full border border-[#8b7355] object-cover sm:h-[210px]"
         />
         <p className="mt-1 text-center text-xs italic text-[#3d2817]">
@@ -65,6 +69,10 @@ const BusinessCapabilities = () => {
         <img
           src={lionsStudio}
           alt="Team collaboration"
+          width="600"
+          height="132"
+          loading="lazy"
+          decoding="async"
           className="reference-image art-drift h-[86px] w-full border border-[#8b7355] object-cover"
         />
       </div>

@@ -12,6 +12,9 @@ const aboutOverview = {
     "Dummy content can describe sourcing, brand building, product strategy, and market connections while keeping the page polished during development.",
   image: lionsStudio,
   imageAlt: "Classic studio interior used as sample about page artwork",
+  imageWidth: 600,
+  imageHeight: 132,
+  imageLoading: "lazy",
 };
 
 const AboutPage = () => {

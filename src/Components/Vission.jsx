@@ -82,6 +82,10 @@ const Vission = () => {
           <img
             src={byzantineIntercession}
             alt="Mosaic artwork"
+            width="600"
+            height="141"
+            loading="lazy"
+            decoding="async"
             className="reference-image art-drift h-[96px] w-full object-cover sm:h-[110px]"
           />
         </div>

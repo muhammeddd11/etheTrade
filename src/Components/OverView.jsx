@@ -11,6 +11,9 @@ const defaultOverview = {
     "We don't follow the market, we elevate it. Our strength lies in merging trade expertise with creative direction, allowing us to build brands that are both commercially successful and visually distinctive.",
   image: senatorGallery,
   imageAlt: "Classical statue gallery",
+  imageWidth: 600,
+  imageHeight: 410,
+  imageLoading: "eager",
 };
 
 const DecorateLine = () => {
@@ -54,7 +57,7 @@ const Overview = ({ data = defaultOverview }) => {
   return (
     <section>
       <div className="border-2 border-[#2a1a0f] bg-[#d4c4a8]/45 p-1.5 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <div className="absolute left-0 top-0 z-10 h-4 w-4 border-l-2 border-t-2 border-[#3d2817]" />
           <div className="absolute right-0 top-0 z-10 h-4 w-4 border-r-2 border-t-2 border-[#3d2817]" />
           <div className="absolute bottom-0 left-0 z-10 h-4 w-4 border-b-2 border-l-2 border-[#3d2817]" />
@@ -63,7 +66,12 @@ const Overview = ({ data = defaultOverview }) => {
           <img
             src={data.image}
             alt={data.imageAlt}
-            className="reference-image art-drift h-[260px] w-full border border-[#8b7355] object-cover sm:h-[330px] lg:h-[320px]"
+            width={data.imageWidth}
+            height={data.imageHeight}
+            loading={data.imageLoading ?? "lazy"}
+            fetchPriority={data.imageLoading === "eager" ? "high" : "auto"}
+            decoding="async"
+            className="reference-image art-drift block h-auto w-full border border-[#8b7355]"
           />
         </div>
       </div>

@@ -1,25 +1,43 @@
 import { useEffect, useState } from "react";
 
 const INTRO_STORAGE_KEY = "ethe-art-collective-intro-seen";
+const DESKTOP_INTRO_DURATION = 3200;
+const MOBILE_INTRO_DURATION = 2400;
+
+const getIntroStorageKey = () => {
+  const viewport = window.matchMedia("(max-width: 767px)").matches
+    ? "mobile"
+    : "desktop";
+
+  return `${INTRO_STORAGE_KEY}-${viewport}`;
+};
+
+const getIntroDuration = () =>
+  window.matchMedia("(max-width: 767px)").matches
+    ? MOBILE_INTRO_DURATION
+    : DESKTOP_INTRO_DURATION;
+
+const shouldShowIntro = () => {
+  const introKey = getIntroStorageKey();
+  const introSeen = sessionStorage.getItem(introKey);
+
+  if (!introSeen) {
+    sessionStorage.setItem(introKey, "true");
+    return true;
+  }
+
+  return false;
+};
 
 const IntroSplash = () => {
-  const [showIntro, setShowIntro] = useState(() => {
-    const introSeen = sessionStorage.getItem(INTRO_STORAGE_KEY);
-
-    if (!introSeen) {
-      sessionStorage.setItem(INTRO_STORAGE_KEY, "true");
-      return true;
-    }
-
-    return false;
-  });
+  const [showIntro, setShowIntro] = useState(shouldShowIntro);
 
   useEffect(() => {
     if (!showIntro) return undefined;
 
     const timer = window.setTimeout(() => {
       setShowIntro(false);
-    }, 3200);
+    }, getIntroDuration());
 
     return () => window.clearTimeout(timer);
   }, [showIntro]);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { lazy, Suspense, useEffect, useRef, useState } from "react"
 import Overview from "./Components/OverView"
 import BusinessCapabilities from "./Components/BusinessCapabilities"
 import Vission from "./Components/Vission"
@@ -9,9 +9,10 @@ import Grid from "./Components/Grid"
 import Footer from "./Components/Footer"
 import IntroSplash from "./Components/IntroSplash"
 import NavBar from "./Components/NavBar"
-import AboutPage from "./Components/AboutPage"
-import ProductsPage from "./Components/ProductsPage"
-import ContactPage from "./Components/ContactPage"
+
+const AboutPage = lazy(() => import("./Components/AboutPage"))
+const ProductsPage = lazy(() => import("./Components/ProductsPage"))
+const ContactPage = lazy(() => import("./Components/ContactPage"))
 
 const HomePage = () => {
   return (
@@ -19,10 +20,10 @@ const HomePage = () => {
       <div className="site-reveal site-reveal--delay-1">
         <Overview />
       </div>
-      <div className="site-reveal site-reveal--delay-2">
+      <div className="deferred-section site-reveal site-reveal--delay-2">
         <BusinessCapabilities />
       </div>
-      <div className="site-reveal site-reveal--delay-3">
+      <div className="deferred-section site-reveal site-reveal--delay-3">
         <Vission />
       </div>
     </Grid>
@@ -82,7 +83,7 @@ function App() {
           <div className="site-reveal site-reveal--delay-1">
             <NavBar activePage={activePage} onNavigate={setActivePage} />
           </div>
-          {renderPage()}
+          <Suspense fallback={null}>{renderPage()}</Suspense>
           <div className="site-reveal site-reveal--delay-4">
             <Footer />
           </div>

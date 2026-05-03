@@ -68,6 +68,21 @@
     50% { transform: scale(1.025); filter: sepia(0.32) saturate(0.98) contrast(1.02) brightness(1.06); }
 }
 
+@keyframes mobileSiteReveal {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mobileBrandPulse {
+    0%, 100% { transform: scale(1); opacity: 0.94; }
+    50% { transform: scale(1.035); opacity: 1; }
+}
+
+@keyframes mobileArtDrift {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.018); }
+}
+
 @keyframes servicesBorderLight {
     to { transform: rotate(1turn); }
 }
@@ -91,8 +106,15 @@ body {
     margin: 0;
 }
 
+.site-background {
+    background-image: var(--background-mobile);
+}
+
 .intro-splash {
     animation: introFade 3.2s ease forwards;
+    contain: layout paint style;
+    isolation: isolate;
+    will-change: opacity;
 }
 
 .intro-splash__grain {
@@ -117,11 +139,13 @@ body {
     background: radial-gradient(circle, rgba(200,169,109,0.18), transparent 64%);
     transform: translate(-50%, -50%);
     animation: haloBloom 3.2s ease forwards;
+    will-change: opacity, transform;
 }
 
 .intro-splash__title {
     animation: introTitleReveal 3.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
     text-shadow: 0 0 34px rgba(200,169,109,0.34), 0 6px 0 rgba(0,0,0,0.18);
+    will-change: opacity, transform, filter;
 }
 
 .intro-splash__eyebrow,
@@ -132,10 +156,12 @@ body {
 .intro-splash__rule {
     animation: introRuleDraw 3.2s ease forwards;
     transform-origin: center;
+    will-change: opacity, transform;
 }
 
 .site-reveal {
     animation: siteReveal 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    will-change: opacity, transform;
 }
 
 .site-reveal--delay-1 { animation-delay: 0.12s; }
@@ -145,6 +171,7 @@ body {
 
 .brand-mark-pulse {
     animation: brandPulse 3.6s ease-in-out infinite;
+    will-change: transform;
 }
 
 .title-ink-sweep {
@@ -174,6 +201,12 @@ body {
 .art-drift {
     animation: artDrift 9s ease-in-out infinite;
     transform-origin: center;
+    will-change: transform;
+}
+
+.deferred-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 560px;
 }
 
 .services-border-light {
@@ -218,6 +251,44 @@ body {
 
 .contact-box--highlight {
     animation: contactFocus 1.8s ease-in-out;
+}
+
+@media (min-width: 768px) {
+    .site-background {
+        background-image: var(--background-desktop);
+    }
+}
+
+@media (max-width: 767px) {
+    .intro-splash,
+    .intro-splash__halo,
+    .intro-splash__title,
+    .intro-splash__eyebrow,
+    .intro-splash__subtitle,
+    .intro-splash__rule {
+        animation-duration: 2.4s;
+    }
+
+    .site-reveal {
+        animation-name: mobileSiteReveal;
+    }
+
+    .art-drift {
+        animation: mobileArtDrift 11s ease-in-out infinite;
+    }
+
+    .brand-mark-pulse {
+        animation: mobileBrandPulse 3.8s ease-in-out infinite;
+        box-shadow: none;
+    }
+
+    .title-ink-sweep {
+        animation-duration: 6.8s;
+    }
+
+    .services-border-light::before {
+        animation-duration: 5.8s;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

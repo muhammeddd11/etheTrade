@@ -7,6 +7,8 @@ const products = [
   {
     name: "Artisan Chocolate Concept",
     image: goldenTouch,
+    imageWidth: 600,
+    imageHeight: 306,
     summary: "Luxury confectionery concept with artistic positioning.",
     details:
       "A premium chocolate line built around refined presentation, memorable gifting, and market-ready brand storytelling.",
@@ -14,6 +16,8 @@ const products = [
   {
     name: "Curated Lifestyle Goods",
     image: byzantineIntercession,
+    imageWidth: 600,
+    imageHeight: 141,
     summary: "Selected products prepared for distinct retail markets.",
     details:
       "A flexible product category focused on sourcing quality goods, packaging them beautifully, and preparing them for regional distribution.",
@@ -21,6 +25,8 @@ const products = [
   {
     name: "Signature Brand Editions",
     image: senatorGallery,
+    imageWidth: 600,
+    imageHeight: 410,
     summary: "Limited collections with elevated visual direction.",
     details:
       "Special edition product drops designed to feel collectible, polished, and suitable for premium commercial partnerships.",
@@ -73,6 +79,10 @@ const ProductsPage = () => {
                     <img
                       src={product.image}
                       alt={product.name}
+                      width={product.imageWidth}
+                      height={product.imageHeight}
+                      loading="lazy"
+                      decoding="async"
                       className="reference-image h-[210px] w-full object-cover"
                     />
                     <div className="border-t-2 border-[#2a1a0f] bg-[#e8dcc4]/45 p-3 shadow-[inset_0_0_16px_rgba(139,115,85,0.25)]">
