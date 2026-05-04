@@ -9,7 +9,7 @@ import Grid from "./Components/Grid"
 import Footer from "./Components/Footer"
 import IntroSplash from "./Components/IntroSplash"
 import NavBar from "./Components/NavBar"
-
+import PageLoader from "./Components/PageLoader"
 const AboutPage = lazy(() => import("./Components/AboutPage"))
 const ProductsPage = lazy(() => import("./Components/ProductsPage"))
 const ContactPage = lazy(() => import("./Components/ContactPage"))
@@ -83,7 +83,7 @@ function App() {
           <div className="site-reveal site-reveal--delay-1">
             <NavBar activePage={activePage} onNavigate={setActivePage} />
           </div>
-          <Suspense fallback={null}>{renderPage()}</Suspense>
+          <Suspense fallback={<PageLoader />}>{renderPage()}</Suspense>
           <div className="site-reveal site-reveal--delay-4">
             <Footer />
           </div>

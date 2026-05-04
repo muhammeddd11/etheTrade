@@ -83,6 +83,24 @@
     50% { transform: scale(1.018); }
 }
 
+@keyframes mobileLoaderSpin {
+    to { transform: rotate(1turn); }
+}
+
+@keyframes mobileLoaderGlow {
+    0%, 100% {
+        box-shadow: 0 0 18px rgba(26,15,10,0.22), inset 0 0 14px rgba(232,220,196,0.18);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(242,213,138,0.38), inset 0 0 18px rgba(232,220,196,0.28);
+    }
+}
+
+@keyframes mobileLoaderText {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
 @keyframes servicesBorderLight {
     to { transform: rotate(1turn); }
 }
@@ -253,6 +271,10 @@ body {
     animation: contactFocus 1.8s ease-in-out;
 }
 
+.mobile-page-loader {
+    display: none;
+}
+
 @media (min-width: 768px) {
     .site-background {
         background-image: var(--background-desktop);
@@ -267,6 +289,58 @@ body {
     .intro-splash__subtitle,
     .intro-splash__rule {
         animation-duration: 2.4s;
+    }
+
+    .mobile-page-loader {
+        display: flex;
+        min-height: 52vh;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 14px;
+        padding: 52px 16px;
+    }
+
+    .mobile-page-loader__mark {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 92px;
+        height: 92px;
+        border-radius: 999px;
+        background:
+            radial-gradient(circle at center, rgba(232,220,196,0.88), rgba(201,184,150,0.72) 56%, rgba(61,40,23,0.16));
+        border: 2px solid rgba(42,26,15,0.58);
+        animation: mobileLoaderGlow 2.2s ease-in-out infinite;
+    }
+
+    .mobile-page-loader__ring {
+        position: absolute;
+        inset: -8px;
+        border-radius: inherit;
+        border: 3px solid rgba(42,26,15,0.18);
+        border-top-color: #1a0f0a;
+        border-right-color: #c8a96d;
+        border-bottom-color: #f2d58a;
+        animation: mobileLoaderSpin 0.95s linear infinite;
+    }
+
+    .mobile-page-loader__logo {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 9px rgba(26,15,10,0.28));
+    }
+
+    .mobile-page-loader__text {
+        margin: 0;
+        color: #1a0f0a;
+        font-size: 0.82rem;
+        font-weight: 900;
+        line-height: 1;
+        text-transform: uppercase;
+        text-shadow: 0 1px 0 rgba(232,220,196,0.7);
+        animation: mobileLoaderText 1.35s ease-in-out infinite;
     }
 
     .site-reveal {
