@@ -56,8 +56,8 @@ const AboutUs = ({ content }) => {
 const Overview = ({ data = defaultOverview }) => {
   return (
     <section>
-      <div className="border-2 border-[#2a1a0f] bg-[#d4c4a8]/45 p-1.5 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
-        <div className="relative overflow-hidden">
+      <div className="animated-panel border-2 border-[#2a1a0f] bg-[#d4c4a8]/45 p-1.5 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
+        <div className="image-frame relative overflow-hidden">
           <div className="absolute left-0 top-0 z-10 h-4 w-4 border-l-2 border-t-2 border-[#3d2817]" />
           <div className="absolute right-0 top-0 z-10 h-4 w-4 border-r-2 border-t-2 border-[#3d2817]" />
           <div className="absolute bottom-0 left-0 z-10 h-4 w-4 border-b-2 border-l-2 border-[#3d2817]" />
@@ -77,7 +77,9 @@ const Overview = ({ data = defaultOverview }) => {
       </div>
 
       <DecorateLine />
-      <AboutUs content={data} />
+      <div className="copy-rise">
+        <AboutUs content={data} />
+      </div>
     </section>
   );
 };

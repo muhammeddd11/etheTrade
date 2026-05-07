@@ -33,6 +33,7 @@ const HomePage = () => {
 function App() {
   const [activePage, setActivePage] = useState("home")
   const [highlightContact, setHighlightContact] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
   const contactRef = useRef(null)
 
   useEffect(() => {
@@ -50,6 +51,21 @@ function App() {
 
     return () => window.clearTimeout(highlightTimer)
   }, [activePage])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 320)
+    }
+
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   const renderPage = () => {
     if (activePage === "about") {
@@ -89,6 +105,16 @@ function App() {
           </div>
         </Layout>
       </MainLayout>
+
+      <button
+        type="button"
+        aria-label="Back to top"
+        title="Back to top"
+        onClick={scrollToTop}
+        className={`scroll-top-button ${showScrollTop ? "scroll-top-button--visible" : ""}`}
+      >
+        <span aria-hidden="true">↑</span>
+      </button>
 
     </>
   )

@@ -1,40 +1,54 @@
 import { useState } from "react";
-import goldenTouch from "../assets/The_Golden Touch.jpg";
-import byzantineIntercession from "../assets/Byzantine_Intercession.jpg";
-import senatorGallery from "../assets/The_Senator's Gallery.jpg";
+import ÉthéréArtisanChocolate from "../assets/ÉthéréArtisanChocolate.jpeg";
+import ÉthéréArtisanChocolate2 from "../assets/ÉthéréArtisanChocolate2.jpeg";
+import ÉthéréArtisanChocolate3 from "../assets/ÉthéréArtisanChocolate3.jpeg";
+import ÉthéréArtisanChocolate4 from "../assets/ÉthéréArtisanChocolate4.jpeg";
 
 const products = [
   {
-    name: "Artisan Chocolate Concept",
-    image: goldenTouch,
+    name: "Éthéré artisan chocolate",
+    image: ÉthéréArtisanChocolate,
     imageWidth: 600,
     imageHeight: 306,
-    summary: "Luxury confectionery concept with artistic positioning.",
-    details:
-      "A premium chocolate line built around refined presentation, memorable gifting, and market-ready brand storytelling.",
+    imageNumber:"1",
+    summary: "Éthéré artisan chocolate",
+    /*details:
+      "A premium chocolate line built around refined presentation, memorable gifting, and market-ready brand storytelling.",*/
   },
   {
-    name: "Curated Lifestyle Goods",
-    image: byzantineIntercession,
+    name: "Éthéré artisan chocolate",
+    image: ÉthéréArtisanChocolate2,
     imageWidth: 600,
     imageHeight: 141,
-    summary: "Selected products prepared for distinct retail markets.",
-    details:
-      "A flexible product category focused on sourcing quality goods, packaging them beautifully, and preparing them for regional distribution.",
+    imageNumber:"2",
+    summary: "Éthéré artisan chocolate.",
+    /*details:
+      "A flexible product category focused on sourcing quality goods, packaging them beautifully, and preparing them for regional distribution.",*/
   },
   {
-    name: "Signature Brand Editions",
-    image: senatorGallery,
+    name: "Éthéré artisan chocolate",
+    image: ÉthéréArtisanChocolate3,
     imageWidth: 600,
     imageHeight: 410,
-    summary: "Limited collections with elevated visual direction.",
-    details:
-      "Special edition product drops designed to feel collectible, polished, and suitable for premium commercial partnerships.",
+    imageNumber:"3",
+    summary: "Éthéré artisan chocolate.",
+    /*details:
+      "Special edition product drops designed to feel collectible, polished, and suitable for premium commercial partnerships.",*/
+  },
+  {
+    name: "Éthéré artisan chocolate",
+    image: ÉthéréArtisanChocolate4,
+    imageWidth: 600,
+    imageHeight: 410,
+    imageNumber:"4",
+    summary: "Éthéré artisan chocolate.",
+    /*details:
+      "Special edition product drops designed to feel collectible, polished, and suitable for premium commercial partnerships.",*/
   },
 ];
 
 const ProductsPage = () => {
-  const [openProduct, setOpenProduct] = useState(products[0].name);
+  const [openProduct, setOpenProduct] = useState(products[0].imageNumber);
 
   return (
     <section className="border-t-4 border-double border-[#2a1a0f] pt-2.5">
@@ -46,18 +60,18 @@ const ProductsPage = () => {
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
         {products.map((product) => {
-          const isOpen = openProduct === product.name;
+          const isOpen = openProduct === product.imageNumber  ;
 
           return (
             <article
-              key={product.name}
-              className="site-reveal border-2 border-[#2a1a0f] bg-[#d4c4a8]/50 p-2 shadow-[inset_0_0_22px_rgba(139,115,85,0.28),0_8px_18px_rgba(0,0,0,0.2)]"
+              key={product.imageNumber}
+              className="animated-panel site-reveal border-2 border-[#2a1a0f] bg-[#d4c4a8]/50 p-2 shadow-[inset_0_0_22px_rgba(139,115,85,0.28),0_8px_18px_rgba(0,0,0,0.2)]"
             >
               <button
                 type="button"
                 aria-expanded={isOpen}
-                onClick={() => setOpenProduct(isOpen ? "" : product.name)}
-                className="flex w-full items-center justify-between gap-3 border-2 border-[#2a1a0f] bg-[#c9b896]/70 px-3 py-2 text-left text-[#1a0f0a] transition hover:bg-[#1a0f0a] hover:text-[#e8dcc4]"
+                onClick={() => setOpenProduct(isOpen ? "" : product.imageNumber)}
+                className="nav-button flex w-full items-center justify-between gap-3 border-2 border-[#2a1a0f] bg-[#c9b896]/70 px-3 py-2 text-left text-[#1a0f0a] transition hover:bg-[#1a0f0a] hover:text-[#e8dcc4]"
               >
                 <span className="text-sm font-black uppercase tracking-[0.08em]">
                   {product.name}
@@ -66,9 +80,11 @@ const ProductsPage = () => {
               </button>
 
               {isOpen && (
-                <div className="relative mt-2 overflow-hidden border border-[#8b7355] bg-[#1a0f0a]/20">
-                  <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#1a0f0a]/38">
-                    <div className="border-2 border-[#e8dcc4] bg-[#1a0f0a]/90 px-5 py-2 text-center shadow-[0_8px_18px_rgba(0,0,0,0.35)]">
+                <div className="product-reveal image-frame relative mt-2 overflow-hidden border border-[#8b7355] bg-[#1a0f0a]/20">
+                  <div className="coming-soon-overlay pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#1a0f0a]/38">
+                    <span className="coming-soon-dot" aria-hidden="true" />
+                    <span className="coming-soon-flash" aria-hidden="true" />
+                    <div className="coming-soon-label border-2 border-[#e8dcc4] bg-[#1a0f0a]/90 px-5 py-2 text-center shadow-[0_8px_18px_rgba(0,0,0,0.35)]">
                       <p className="m-0 text-lg font-black uppercase tracking-[0.16em] text-[#f2d58a]">
                         Coming Soon
                       </p>

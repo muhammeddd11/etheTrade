@@ -31,7 +31,7 @@ const ServiceItem = () => {
 
       <div className="space-y-2">
         {services.map((service) => (
-          <div key={service.title}>
+          <div key={service.title} className="service-step">
             <h5 className="mb-0.5 text-sm font-bold text-[#1a0f0a] lg:text-base">
               {service.title}
             </h5>
@@ -48,7 +48,8 @@ const ServiceItem = () => {
 const BusinessCapabilities = () => {
   return (
     <section>
-      <div className="mb-2 border-2 border-[#2a1a0f] bg-[#d4c4a8]/45 p-1.5 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
+      <div className="animated-panel mb-2 border-2 border-[#2a1a0f] bg-[#d4c4a8]/45 p-1.5 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
+        <div className="image-frame overflow-hidden">
         <img
           src={goldenTouch}
           alt="Strategic business development"
@@ -58,6 +59,7 @@ const BusinessCapabilities = () => {
           decoding="async"
           className="reference-image art-drift h-[180px] w-full border border-[#8b7355] object-cover sm:h-[210px]"
         />
+        </div>
         <p className="mt-1 text-center text-xs italic text-[#3d2817]">
           Strategic Brands Development
         </p>
@@ -65,7 +67,8 @@ const BusinessCapabilities = () => {
 
       <ServiceItem />
 
-      <div className="mt-2 border-2 border-[#2a1a0f] bg-[#d4c4a8]/45 p-1.5 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
+      <div className="animated-panel mt-2 border-2 border-[#2a1a0f] bg-[#d4c4a8]/45 p-1.5 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
+        <div className="image-frame overflow-hidden">
         <img
           src={lionsStudio}
           alt="Team collaboration"
@@ -75,6 +78,7 @@ const BusinessCapabilities = () => {
           decoding="async"
           className="reference-image art-drift h-[86px] w-full border border-[#8b7355] object-cover"
         />
+        </div>
       </div>
     </section>
   );

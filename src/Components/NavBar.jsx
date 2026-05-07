@@ -17,9 +17,9 @@ const NavBar = ({ activePage, onNavigate }) => {
               key={item.id}
               type="button"
               onClick={() => onNavigate(item.id)}
-              className={`border-2 px-3 py-1.5 font-serif text-xs font-black uppercase tracking-[0.12em] transition duration-200 sm:text-sm ${
+              className={`nav-button border-2 px-3 py-1.5 font-serif text-xs font-black uppercase tracking-[0.12em] transition duration-200 sm:text-sm ${
                 isActive
-                  ? "border-[#1a0f0a] bg-[#1a0f0a] text-[#e8dcc4] shadow-[0_4px_14px_rgba(0,0,0,0.24)]"
+                  ? "nav-button--active border-[#1a0f0a] bg-[#1a0f0a] text-[#e8dcc4] shadow-[0_4px_14px_rgba(0,0,0,0.24)]"
                   : "border-[#2a1a0f] bg-[#d4c4a8]/65 text-[#1a0f0a] hover:bg-[#1a0f0a] hover:text-[#e8dcc4]"
               }`}
             >
