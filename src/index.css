@@ -806,6 +806,23 @@ body {
     text-shadow: 0 1px 0 rgba(232,220,196,0.6);
 }
 
+:dir(rtl) * {
+    letter-spacing: 0 !important;
+}
+
+:dir(rtl) .service-step:hover {
+    border-left-width: 0;
+    border-right-width: 3px;
+    padding-left: 0;
+    padding-right: 10px;
+    transform: translateX(-3px);
+}
+
+:dir(rtl) .scroll-top-button {
+    right: auto;
+    left: 18px;
+}
+
 @media (min-width: 768px) {
     .site-background {
         background-image: var(--background-desktop);
@@ -927,6 +944,11 @@ body {
         width: 42px;
         height: 42px;
         font-size: 1.25rem;
+    }
+
+    :dir(rtl) .scroll-top-button {
+        right: auto;
+        left: 12px;
     }
 }
 

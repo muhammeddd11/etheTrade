@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import backgroundDesktop from "../assets/background-desktop.jpg";
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, dir }) => {
   const shellRef = useRef(null);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ const MainLayout = ({ children }) => {
   return (
     <div
       ref={shellRef}
+      dir={dir}
       className="site-background relative min-h-screen overflow-hidden bg-[#c7ad7d] bg-cover bg-center bg-repeat p-2 font-serif text-[#1d120b] sm:p-4"
       style={{
         "--background-mobile": `url(${backgroundDesktop})`,

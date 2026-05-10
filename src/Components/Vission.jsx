@@ -1,4 +1,3 @@
-import byzantineIntercession from "../assets/Byzantine_Intercession.jpg";
 import ContactBox from "./ContactBox";
 
 const SectionLabel = ({ children }) => {
@@ -11,7 +10,7 @@ const SectionLabel = ({ children }) => {
   );
 };
 
-const OurValues = () => {
+const OurValues = ({ data }) => {
   return (
     <div className="mt-2">
       <div className="mb-1 flex items-center justify-center gap-1 text-[#2a1a0f]">
@@ -21,67 +20,54 @@ const OurValues = () => {
       </div>
 
       <h3 className="mb-2 text-center text-xl font-black uppercase text-[#1a0f0a]">
-        Our Values
+        {data.valuesTitle}
       </h3>
 
       <ul className="space-y-1.5 text-sm leading-snug text-[#1d120b] lg:text-base">
-        <li className="flex items-start gap-2">
-          <span className="font-bold">+</span>
-          <span>
-            <strong>Trust</strong> We build strong lasting relationships.
-          </span>
-        </li>
-        <li className="flex items-start gap-2">
-          <span className="font-bold">+</span>
-          <span>
-            <strong>Excellence</strong> We deliver nothing less than premium
-            quality.
-          </span>
-        </li>
-        <li className="flex items-start gap-2">
-          <span className="font-bold">+</span>
-          <span>
-            <strong>Creativity</strong> We create with vision and originality.
-          </span>
-        </li>
+        {data.values.map((value) => (
+          <li key={value.name} className="flex items-start gap-2">
+            <span className="font-bold">+</span>
+            <span>
+              <strong>{value.name}</strong> {value.description}
+            </span>
+          </li>
+        ))}
       </ul>
     </div>
   );
 };
 
-const ComingSoon = () => {
+const ComingSoon = ({ data }) => {
   return (
     <div className="mt-3 border-2 border-[#2a1a0f] bg-[#d4c4a8]/55 p-3 shadow-[inset_0_0_18px_rgba(139,115,85,0.28)]">
       <h4 className="mb-1.5 text-center text-base font-black uppercase text-[#1a0f0a]">
-        Coming Soon
+        {data.comingSoonTitle}
       </h4>
       <p className="text-center text-sm italic leading-snug text-[#1d120b]">
-        Etheld Artisan Chocolate - A new luxury concept artistic blending
+        {data.comingSoonText}
       </p>
     </div>
   );
 };
 
-const Vission = () => {
+const Vission = ({ data, contact }) => {
   return (
     <section>
       <div className="border-2 border-[#2a1a0f] bg-[#c9b896]/45 p-2 shadow-[inset_0_0_22px_rgba(139,115,85,0.3),0_8px_18px_rgba(0,0,0,0.22)]">
-        <SectionLabel>Our Vision</SectionLabel>
+        <SectionLabel>{data.visionTitle}</SectionLabel>
         <p className="mb-3 text-justify text-sm leading-snug text-[#1d120b] lg:text-base">
-          To build a timeless brand that blends trade, creativity, and
-          innovation into one refined ecosystem.
+          {data.visionText}
         </p>
 
-        <SectionLabel>Our Mission</SectionLabel>
+        <SectionLabel>{data.missionTitle}</SectionLabel>
         <p className="mb-3 text-justify text-sm leading-snug text-[#1d120b] lg:text-base">
-          To deliver exceptional products and build distinctive brands that
-          reflect quality, creativity, and purpose.
+          {data.missionText}
         </p>
 
         <div className="mb-1 border-2 border-[#2a1a0f] bg-[#d4c4a8]/55 p-1.5 shadow-[inset_0_0_18px_rgba(139,115,85,0.28)]">
           <img
-            src={byzantineIntercession}
-            alt="Mosaic artwork"
+            src={data.image}
+            alt={data.imageAlt}
             width="600"
             height="141"
             loading="lazy"
@@ -91,13 +77,13 @@ const Vission = () => {
         </div>
 
         <p className="text-center text-xs italic text-[#3d2817]">
-          Dubai, United Arab Emirates
+          {data.locationCaption}
         </p>
       </div>
 
-      <OurValues />
-      <ComingSoon />
-      <ContactBox />
+      <OurValues data={data} />
+      <ComingSoon data={data} />
+      <ContactBox content={contact} />
     </section>
   );
 };

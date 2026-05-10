@@ -1,4 +1,4 @@
-const ContactBox = ({ highlighted = false, boxRef }) => {
+const ContactBox = ({ content, highlighted = false, boxRef }) => {
   return (
     <div
       ref={boxRef}
@@ -8,12 +8,18 @@ const ContactBox = ({ highlighted = false, boxRef }) => {
       }`}
     >
       <h4 className="mb-2 text-center text-base font-black uppercase text-[#e8dcc4]">
-        Let's Connect
+        {content.boxTitle}
       </h4>
       <div className="space-y-0.5 text-sm leading-snug text-[#e8dcc4]">
-        <p>Email: ete@ethetrade.info</p>
-        <p>Location: Dubai, UAE</p>
-        <p>Phone: +971 554038149</p>
+        <p>
+          {content.emailLabel}: {content.email}
+        </p>
+        <p>
+          {content.locationLabel}: {content.location}
+        </p>
+        <p>
+          {content.phoneLabel}: {content.phone}
+        </p>
       </div>
     </div>
   );

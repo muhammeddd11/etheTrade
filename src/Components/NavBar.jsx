@@ -1,15 +1,8 @@
-const navItems = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About Us" },
-  { id: "products", label: "Products" },
-  { id: "contact", label: "Contact Us" },
-];
-
-const NavBar = ({ activePage, onNavigate }) => {
+const NavBar = ({ activePage, items, onNavigate }) => {
   return (
     <nav className="mb-3 border-y-4 border-double border-[#2a1a0f] bg-[#c9b896]/45 px-2 py-2 shadow-[inset_0_0_18px_rgba(139,115,85,0.2)]">
       <div className="flex flex-wrap items-center justify-center gap-2">
-        {navItems.map((item) => {
+        {items.map((item) => {
           const isActive = activePage === item.id;
 
           return (
