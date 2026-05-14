@@ -12,6 +12,7 @@ import NavBar from "./Components/NavBar";
 import PageLoader from "./Components/PageLoader";
 import { defaultLocale, supportedLanguages } from "./content/defaultSiteContent";
 import { useSiteContent } from "./hooks/useSiteContent";
+import AdminRoute from "./Components/admin/AdminRoute";
 
 const AboutPage = lazy(() => import("./Components/AboutPage"));
 const ProductsPage = lazy(() => import("./Components/ProductsPage"));
@@ -45,12 +46,20 @@ const HomePage = ({ content }) => {
 };
 
 function App() {
+  const [pathName, setPathName] = useState(window.location.pathname);
   const [activePage, setActivePage] = useState("home");
   const [locale, setLocale] = useState(getInitialLocale);
   const [highlightContact, setHighlightContact] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const contactRef = useRef(null);
-  const { content } = useSiteContent(locale);
+  const { content, isLoading } = useSiteContent(locale);
+
+  useEffect(() => {
+    const handlePopState = () => setPathName(window.location.pathname);
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   const activeLanguage = useMemo(
     () =>
@@ -95,6 +104,14 @@ function App() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (pathName.startsWith("/admin")) {
+    return <AdminRoute />;
+  }
+
+  if (isLoading || !content) {
+    return <PageLoader />;
+  }
 
   const renderPage = () => {
     if (activePage === "about") {

@@ -36,7 +36,7 @@ const Header = ({ content, activeLanguage, languages, onLanguageChange }) => {
 
           <h1 className="title-ink-sweep title-etch mx-auto m-0 max-w-full border-b-2 border-[#1d120b] pb-1 text-[clamp(1.58rem,7.2vw,2rem)] font-black uppercase leading-[0.95] tracking-[0.04em] text-black sm:text-[clamp(2rem,5.6vw,2.6rem)] sm:leading-[0.96] sm:tracking-[0.06em] lg:text-[clamp(2.45rem,4.6vw,4.45rem)] lg:leading-none lg:tracking-[0.08em]">
             <span className="block lg:inline">{content.headerTitleLineOne}</span>
-            <span className="block lg:inline lg:before:content-['\00a0']">
+            <span className="block lg:ml-[0.28em] lg:inline">
               {content.headerTitleLineTwo}
             </span>
           </h1>
