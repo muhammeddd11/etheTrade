@@ -3,29 +3,42 @@ import { getDefaultSiteContent } from "../content/defaultSiteContent";
 import { subscribeToSiteContent } from "../firebase/siteContentService";
 
 export const useSiteContent = (locale) => {
-  const [content, setContent] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [state, setState] = useState({
+    content: null,
+    error: null,
+    isLoading: true,
+    locale,
+  });
 
   useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-
     const unsubscribe = subscribeToSiteContent(
       locale,
       (nextContent) => {
-        setContent(nextContent);
-        setIsLoading(false);
+        setState({
+          content: nextContent,
+          error: null,
+          isLoading: false,
+          locale,
+        });
       },
       (contentError) => {
-        setError(contentError);
-        setContent(getDefaultSiteContent(locale));
-        setIsLoading(false);
+        setState({
+          content: getDefaultSiteContent(locale),
+          error: contentError,
+          isLoading: false,
+          locale,
+        });
       },
     );
 
     return unsubscribe;
   }, [locale]);
 
-  return { content, isLoading, error };
+  const hasLoadedActiveLocale = state.locale === locale;
+
+  return {
+    content: hasLoadedActiveLocale ? state.content : null,
+    error: hasLoadedActiveLocale ? state.error : null,
+    isLoading: !hasLoadedActiveLocale || state.isLoading,
+  };
 };

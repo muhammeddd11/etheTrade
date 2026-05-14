@@ -10,6 +10,7 @@ import {
   defaultLocale,
   getDefaultSiteContent,
   mergeSiteContent,
+  resolveSiteContentAssets,
 } from "../content/defaultSiteContent";
 import { db, isFirebaseConfigured } from "./firebase";
 
@@ -32,7 +33,7 @@ export const normalizeContentDoc = (snapshot, locale = defaultLocale) => {
     return fallback;
   }
 
-  return mergeSiteContent(fallback, snapshot.data()?.content);
+  return resolveSiteContentAssets(mergeSiteContent(fallback, snapshot.data()?.content));
 };
 
 export const subscribeToSiteContent = (locale, onChange, onError) => {
@@ -92,4 +93,3 @@ export const deleteSiteContentOverride = async (locale) => {
 
   await deleteDoc(contentRef);
 };
-

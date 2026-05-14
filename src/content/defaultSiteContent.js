@@ -12,6 +12,33 @@ import ethereChocolate2 from "../assets/ÉthéréArtisanChocolate2.jpeg";
 import ethereChocolate3 from "../assets/ÉthéréArtisanChocolate3.jpeg";
 import ethereChocolate4 from "../assets/ÉthéréArtisanChocolate4.jpeg";
 
+const editableAssets = [
+  ["The_Senator's Gallery.jpg", senatorGallery],
+  ["The_Golden Touch.jpg", goldenTouch],
+  ["The_Lion's Studio.jpg", lionsStudio],
+  ["Byzantine_Intercession.jpg", byzantineIntercession],
+  ["drawing.jpg", drawing],
+  ["athena.jpg", athena],
+  ["womanWithAnOwl.jpg", womanWithAnOwl],
+  ["background-desktop.jpg", backgroundDesktop],
+  ["ÉthéréArtisanChocolate.jpeg", ethereChocolate],
+  ["ÉthéréArtisanChocolate2.jpeg", ethereChocolate2],
+  ["ÉthéréArtisanChocolate3.jpeg", ethereChocolate3],
+  ["ÉthéréArtisanChocolate4.jpeg", ethereChocolate4],
+];
+
+const assetLookup = new Map(
+  editableAssets.flatMap(([filename, assetUrl]) => {
+    const decodedFilename = decodeURIComponent(filename);
+    const stem = decodedFilename.replace(/\.[^.]+$/, "");
+
+    return [
+      [decodedFilename, assetUrl],
+      [stem, assetUrl],
+    ];
+  }),
+);
+
 const [whatWeDo, whereWeAreGoing, whatWeStandFor, difference, valuesSection] =
   companyProfile.Content;
 
@@ -394,5 +421,56 @@ export const mergeSiteContent = (fallback, override) => {
   );
 };
 
+export const resolveEditableAsset = (value) => {
+  if (typeof value !== "string" || /^https?:\/\//i.test(value)) {
+    return value;
+  }
+
+  const decodedValue = (() => {
+    try {
+      return decodeURIComponent(value);
+    } catch {
+      return value;
+    }
+  })();
+
+  const normalizedValue = decodedValue.replace(/\\/g, "/");
+  const basename = normalizedValue.split("/").pop() || normalizedValue;
+  const cleanBasename = basename.split("?")[0].split("#")[0];
+  const cleanStem = cleanBasename.replace(/-[A-Za-z0-9_]+(?=\.[^.]+$)/, "");
+
+  return (
+    assetLookup.get(cleanBasename) ||
+    assetLookup.get(cleanStem) ||
+    [...assetLookup.entries()].find(([assetName]) =>
+      normalizedValue.includes(assetName),
+    )?.[1] ||
+    value
+  );
+};
+
+export const resolveSiteContentAssets = (value, key = "") => {
+  if (Array.isArray(value)) {
+    return value.map((item) => resolveSiteContentAssets(item, key));
+  }
+
+  if (isPlainObject(value)) {
+    return Object.fromEntries(
+      Object.entries(value).map(([childKey, childValue]) => [
+        childKey,
+        resolveSiteContentAssets(childValue, childKey),
+      ]),
+    );
+  }
+
+  if (/image/i.test(key)) {
+    return resolveEditableAsset(value);
+  }
+
+  return value;
+};
+
 export const getDefaultSiteContent = (locale = defaultLocale) =>
-  mergeSiteContent(defaultSiteContent, localizedSiteContent[locale]);
+  resolveSiteContentAssets(
+    mergeSiteContent(defaultSiteContent, localizedSiteContent[locale]),
+  );

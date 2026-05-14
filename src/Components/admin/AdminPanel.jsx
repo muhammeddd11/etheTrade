@@ -105,11 +105,6 @@ const NavigationEditor = ({ value, onChange }) => (
 );
 
 const FieldEditor = ({ label, value, templateValue, onChange, depth = 0 }) => {
-  const fieldId = useMemo(
-    () => `${label.replace(/\W+/g, "-")}-${Math.random().toString(36).slice(2)}`,
-    [label],
-  );
-
   if (Array.isArray(value)) {
     const sample = value[0] || templateValue?.[0] || {};
 
@@ -210,7 +205,6 @@ const FieldEditor = ({ label, value, templateValue, onChange, depth = 0 }) => {
       </span>
       {isLongText ? (
         <textarea
-          id={fieldId}
           value={value ?? ""}
           onChange={(event) => onChange(event.target.value)}
           rows={4}
@@ -218,7 +212,6 @@ const FieldEditor = ({ label, value, templateValue, onChange, depth = 0 }) => {
         />
       ) : (
         <input
-          id={fieldId}
           type={isNumber ? "number" : "text"}
           value={value ?? ""}
           onChange={(event) =>
