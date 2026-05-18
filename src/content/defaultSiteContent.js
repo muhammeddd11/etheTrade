@@ -44,7 +44,7 @@ const [whatWeDo, whereWeAreGoing, whatWeStandFor, difference, valuesSection] =
 
 export const supportedLanguages = [
   { code: "en", label: "English", shortLabel: "EN", dir: "ltr" },
-  { code: "ar", label: "العربية", shortLabel: "AR", dir: "rtl" },
+  { code: "fr", label: "Français", shortLabel: "FR", dir: "ltr" },
 ];
 
 export const defaultLocale = "en";
@@ -231,163 +231,173 @@ export const defaultSiteContent = {
   },
 };
 
-const arabicSiteContent = {
+const frenchSiteContent = {
   siteMeta: {
-    brandName: "مجموعة إيثي للفنون",
-    headerTitleLineOne: "إيثي آرت",
-    headerTitleLineTwo: "كولكتيف",
-    eyebrow: "نربط الأسواق. ونرتقي بالفن.",
-    tagline: "نبني العلامات. ونصل الأسواق.",
-    established: "تأسست 2024",
-    location: "دبي، الإمارات",
-    descriptor: "تجارة استراتيجية وتطوير إبداعي للعلامات",
-    introEyebrow: "نربط الأسواق",
-    introSubtitle: "نبني العلامات. ونصل الأسواق.",
+    brandName: "Ethe Art Collective",
+    headerTitleLineOne: "Ethe Art",
+    headerTitleLineTwo: "Collective",
+    eyebrow: "Relier les marches. Elever l'art.",
+    tagline: "Construire des marques. Connecter les marches.",
+    established: "Depuis 2024",
+    location: "Dubai, EAU",
+    descriptor: "Commerce strategique et developpement creatif de marques",
+    introEyebrow: "Relier les marches",
+    introSubtitle: "Construire des marques. Connecter les marches.",
   },
   navigation: [
-    { id: "home", label: "الرئيسية" },
-    { id: "about", label: "من نحن" },
-    { id: "products", label: "المنتجات" },
-    { id: "contact", label: "تواصل معنا" },
+    { id: "home", label: "Accueil" },
+    { id: "about", label: "A propos" },
+    { id: "products", label: "Produits" },
+    { id: "contact", label: "Contact" },
   ],
   home: {
     overview: {
-      eyebrow: "من نحن",
+      eyebrow: "Qui nous sommes",
       intro:
-        "إيثي تريد شركة مقرها دبي تعمل في التجارة وتطوير العلامات، وتركز على تقديم منتجات متميزة وبناء علامات مختلفة تبرز في الأسواق التنافسية.",
+        "Ethe Trade est une societe basee a Dubai, specialisee dans le commerce et le developpement de marques, avec pour objectif de proposer des produits premium et de construire des marques distinctives dans des marches competitifs.",
       support:
-        "نجمع بين التوريد الاستراتيجي والتفكير الإبداعي لتحويل المنتجات إلى تجارب علامات ذات معنى.",
-      edgeTitle: "ميزتنا",
+        "Nous associons approvisionnement strategique et pensee creative pour transformer les produits en experiences de marque porteuses de sens.",
+      edgeTitle: "Notre avantage",
       edgeText:
-        "نحن لا نتبع السوق، بل نرتقي به. تكمن قوتنا في دمج خبرة التجارة مع التوجيه الإبداعي لبناء علامات ناجحة تجاريا ومميزة بصريا.",
-      imageAlt: "معرض تماثيل كلاسيكية",
+        "Nous ne suivons pas le marche, nous l'elevons. Notre force consiste a unir expertise commerciale et direction creative afin de batir des marques a la fois performantes et visuellement distinctives.",
+      imageAlt: "Galerie de statues classiques",
     },
     services: {
-      title: "الخدمات",
-      eyebrow: "ماذا نقدم:",
-      imageAlt: "تطوير أعمال استراتيجي",
-      imageCaption: "تطوير العلامات الاستراتيجية",
-      secondaryImageAlt: "تعاون الفريق",
+      title: "Services",
+      eyebrow: "Ce que nous faisons :",
+      imageAlt: "Developpement strategique d'entreprise",
+      imageCaption: "Developpement strategique de marques",
+      secondaryImageAlt: "Collaboration d'equipe",
       items: [
         {
-          title: "1. التجارة العامة",
-          text: "نوفر ونورد منتجات عالية الجودة عبر الأسواق الدولية مع ضمان الاعتمادية والكفاءة والاستمرارية.",
+          title: "1. Commerce general",
+          text: "Nous sourcons et livrons des produits de haute qualite sur les marches internationaux, avec fiabilite, efficacite et constance.",
         },
         {
-          title: "2. توزيع المنتجات",
-          text: "نربط المنتجات بالأسواق المناسبة من خلال قنوات توزيع استراتيجية تساعد العلامات على تحقيق كامل إمكاناتها.",
+          title: "2. Distribution de produits",
+          text: "Nous connectons les produits aux bons marches grace a des canaux de distribution strategiques, afin d'aider les marques a atteindre leur plein potentiel.",
         },
         {
-          title: "3. تطوير العلامات",
-          text: "نحول المنتجات إلى علامات. من التمركز إلى الهوية البصرية، نبني تجارب علامات مميزة وراسخة.",
+          title: "3. Developpement de marques",
+          text: "Nous transformons les produits en marques. Du positionnement a l'identite visuelle, nous creons des experiences de marque distinctives et memorables.",
         },
       ],
     },
     vision: {
-      visionTitle: "رؤيتنا",
+      visionTitle: "Notre vision",
       visionText:
-        "بناء علامة خالدة تمزج التجارة والإبداع والابتكار ضمن منظومة راقية واحدة.",
-      missionTitle: "مهمتنا",
+        "Batir une marque intemporelle qui unit commerce, creativite et innovation au sein d'un ecosysteme raffine.",
+      missionTitle: "Notre mission",
       missionText:
-        "تقديم منتجات استثنائية وبناء علامات مميزة تعكس الجودة والإبداع والهدف.",
-      imageAlt: "عمل فني فسيفسائي",
-      locationCaption: "دبي، الإمارات العربية المتحدة",
-      valuesTitle: "قيمنا",
+        "Proposer des produits d'exception et construire des marques distinctives qui refletent la qualite, la creativite et le sens.",
+      imageAlt: "Oeuvre en mosaique",
+      locationCaption: "Dubai, Emirats arabes unis",
+      valuesTitle: "Nos valeurs",
       values: [
         {
-          name: "الثقة",
-          description: "نبني علاقات قوية ودائمة.",
+          name: "Confiance",
+          description: "Nous construisons des relations solides et durables.",
         },
         {
-          name: "التميز",
-          description: "لا نقدم أقل من الجودة الرفيعة.",
+          name: "Excellence",
+          description: "Nous visons toujours une qualite premium.",
         },
         {
-          name: "الإبداع",
-          description: "نبدع برؤية وأصالة.",
+          name: "Creativite",
+          description: "Nous creons avec vision et originalite.",
         },
       ],
-      comingSoonTitle: "قريبا",
-      comingSoonText: "إيثير شوكولاتة حرفية - مفهوم فاخر جديد بمزيج فني",
+      comingSoonTitle: "Bientot disponible",
+      comingSoonText:
+        "Ethere Artisan Chocolate - un nouveau concept de luxe au melange artistique",
     },
   },
   about: {
-    tagline: "نربط الأسواق. ونرتقي بالفن.",
-    title: "عن إيثي تريد",
+    tagline: "Relier les marches. Elever l'art.",
+    title: "A propos d'Ethe Trade",
     panels: [
       {
-        heading: "ماذا نقدم",
+        heading: "Ce que nous faisons",
         content:
-          "إيثي تريد شركة تجارية وتطوير علامات مقرها دبي، تعمل على تقديم منتجات متميزة وبناء علامات قادرة على المنافسة في الأسواق الحديثة.",
-        imageAlt: "تمثال عدالة كلاسيكي",
+          "Ethe Trade est une societe de commerce et de developpement de marques basee a Dubai, dediee aux produits premium et aux marques capables de se distinguer dans les marches modernes.",
+        imageAlt: "Statue classique de la justice",
       },
       {
-        heading: "إلى أين نتجه",
+        heading: "Ou nous allons",
         content:
-          "نتجه نحو بناء منظومة راقية تجمع التجارة والإبداع والابتكار، وتفتح مسارات جديدة للمنتجات والعلامات في الأسواق الإقليمية والدولية.",
-        imageAlt: "قوس معماري كلاسيكي",
+          "Nous avancons vers la creation d'un ecosysteme raffine qui rassemble commerce, creativite et innovation, ouvrant de nouvelles voies aux produits et aux marques sur les marches regionaux et internationaux.",
+        imageAlt: "Arc architectural classique",
       },
       {
-        heading: "ما نؤمن به",
+        heading: "Ce en quoi nous croyons",
         content:
-          "نؤمن بأن المنتج الجيد يحتاج إلى رؤية واضحة وهوية قوية وتجربة لا تنسى. لذلك نعمل بعناية على كل تفصيل يربط الجودة بالمعنى.",
-        imageAlt: "عمل فني لتمثال أثينا",
+          "Nous croyons qu'un bon produit a besoin d'une vision claire, d'une identite forte et d'une experience memorable. C'est pourquoi nous travaillons chaque detail pour relier la qualite au sens.",
+        imageAlt: "Oeuvre representant une statue d'Athena",
       },
     ],
     difference: {
-      heading: "ما الذي يميزنا",
+      heading: "Ce qui nous distingue",
       content:
-        "نمزج التفكير التجاري مع الحس الإبداعي لنحول المنتجات إلى علامات تحمل حضورا واضحا وقيمة قابلة للنمو.",
+        "Nous combinons pensee commerciale et sensibilite creative pour transformer les produits en marques porteuses d'une presence claire et d'une valeur durable.",
     },
     valuesSection: {
-      heading: "قيمنا",
+      heading: "Nos valeurs",
       values: [
-        { name: "الثقة", description: "نبني علاقات قوية ودائمة." },
-        { name: "التميز", description: "نقدم جودة رفيعة في كل تفصيل." },
-        { name: "الإبداع", description: "نصنع أفكارا وهوية برؤية أصيلة." },
+        {
+          name: "Confiance",
+          description: "Nous construisons des relations solides et durables.",
+        },
+        {
+          name: "Excellence",
+          description: "Nous apportons une qualite elevee a chaque detail.",
+        },
+        {
+          name: "Creativite",
+          description: "Nous faconnons des idees et des identites avec vision.",
+        },
       ],
     },
   },
   products: {
-    title: "المنتجات",
-    comingSoonLabel: "قريبا",
+    title: "Produits",
+    comingSoonLabel: "Bientot disponible",
     items: [
       {
-        name: "إيثير شوكولاتة حرفية",
-        summary: "إيثير شوكولاتة حرفية",
+        name: "Ethere artisan chocolate",
+        summary: "Ethere artisan chocolate",
       },
       {
-        name: "إيثير شوكولاتة حرفية",
-        summary: "إيثير شوكولاتة حرفية.",
+        name: "Ethere artisan chocolate",
+        summary: "Ethere artisan chocolate.",
       },
       {
-        name: "إيثير شوكولاتة حرفية",
-        summary: "إيثير شوكولاتة حرفية.",
+        name: "Ethere artisan chocolate",
+        summary: "Ethere artisan chocolate.",
       },
       {
-        name: "إيثير شوكولاتة حرفية",
-        summary: "إيثير شوكولاتة حرفية.",
+        name: "Ethere artisan chocolate",
+        summary: "Ethere artisan chocolate.",
       },
     ],
   },
   contact: {
-    pageTitle: "تواصل معنا",
-    boxTitle: "لنتواصل",
-    emailLabel: "البريد الإلكتروني",
-    locationLabel: "الموقع",
-    location: "دبي، الإمارات",
-    phoneLabel: "الهاتف",
+    pageTitle: "Contact",
+    boxTitle: "Restons en contact",
+    emailLabel: "E-mail",
+    locationLabel: "Adresse",
+    location: "Dubai, EAU",
+    phoneLabel: "Telephone",
   },
   footer: {
-    leftText: "إصدار متميز",
-    centerText: "إيثي تريد",
-    rightText: "دبي 2024",
+    leftText: "Edition premium",
+    centerText: "Ethe Trade",
+    rightText: "Dubai 2024",
   },
 };
 
 export const localizedSiteContent = {
   en: defaultSiteContent,
-  ar: arabicSiteContent,
+  fr: frenchSiteContent,
 };
 
 const isPlainObject = (value) =>
