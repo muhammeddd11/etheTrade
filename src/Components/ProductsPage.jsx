@@ -1,7 +1,19 @@
 import { useState } from "react";
 
 const ProductsPage = ({ data }) => {
-  const [openProduct, setOpenProduct] = useState(data.items[0].imageNumber);
+  const products = (data.items || []).filter((product, index, items) => {
+    if (!product.imageNumber) {
+      return true;
+    }
+
+    return (
+      items.findIndex((item) => item.imageNumber === product.imageNumber) ===
+      index
+    );
+  });
+  const [openProduct, setOpenProduct] = useState(
+    products[0]?.imageNumber || "",
+  );
 
   return (
     <section className="border-t-4 border-double border-[#2a1a0f] pt-2.5">
@@ -12,12 +24,17 @@ const ProductsPage = ({ data }) => {
       </div>
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        {data.items.map((product) => {
+        {products.map((product, index) => {
           const isOpen = openProduct === product.imageNumber;
+          const showComingSoon = product.showComingSoon !== false;
+          const imageAspectRatio =
+            product.imageWidth && product.imageHeight
+              ? `${product.imageWidth} / ${product.imageHeight}`
+              : undefined;
 
           return (
             <article
-              key={product.imageNumber}
+              key={product.imageNumber || `${product.name}-${index}`}
               className="animated-panel site-reveal border-2 border-[#2a1a0f] bg-[#d4c4a8]/50 p-2 shadow-[inset_0_0_22px_rgba(139,115,85,0.28),0_8px_18px_rgba(0,0,0,0.2)]"
             >
               <button
@@ -36,17 +53,19 @@ const ProductsPage = ({ data }) => {
 
               {isOpen && (
                 <div className="product-reveal image-frame relative mt-2 overflow-hidden border border-[#8b7355] bg-[#1a0f0a]/20">
-                  <div className="coming-soon-overlay pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#1a0f0a]/38">
-                    <span className="coming-soon-dot" aria-hidden="true" />
-                    <span className="coming-soon-flash" aria-hidden="true" />
-                    <div className="coming-soon-label border-2 border-[#e8dcc4] bg-[#1a0f0a]/90 px-5 py-2 text-center shadow-[0_8px_18px_rgba(0,0,0,0.35)]">
-                      <p className="m-0 text-lg font-black uppercase tracking-[0.16em] text-[#f2d58a]">
-                        {data.comingSoonLabel}
-                      </p>
+                  {showComingSoon && (
+                    <div className="coming-soon-overlay pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#1a0f0a]/38">
+                      <span className="coming-soon-dot" aria-hidden="true" />
+                      <span className="coming-soon-flash" aria-hidden="true" />
+                      <div className="coming-soon-label border-2 border-[#e8dcc4] bg-[#1a0f0a]/90 px-5 py-2 text-center shadow-[0_8px_18px_rgba(0,0,0,0.35)]">
+                        <p className="m-0 text-lg font-black uppercase tracking-[0.16em] text-[#f2d58a]">
+                          {data.comingSoonLabel}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  <div className="blur-[3px]">
+                  <div className={showComingSoon ? "blur-[3px]" : ""}>
                     <img
                       src={product.image}
                       alt={product.name}
@@ -54,7 +73,8 @@ const ProductsPage = ({ data }) => {
                       height={product.imageHeight}
                       loading="lazy"
                       decoding="async"
-                      className="reference-image h-[210px] w-full object-cover"
+                      style={{ aspectRatio: imageAspectRatio }}
+                      className="reference-image product-image block w-full object-contain"
                     />
                     <div className="border-t-2 border-[#2a1a0f] bg-[#e8dcc4]/45 p-3 shadow-[inset_0_0_16px_rgba(139,115,85,0.25)]">
                       <h3 className="mb-1 text-base font-black uppercase text-[#1a0f0a]">

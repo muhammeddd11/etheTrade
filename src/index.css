@@ -508,6 +508,30 @@ body {
     filter: sepia(0.22) saturate(0.9) contrast(0.96) brightness(1.12);
 }
 
+.product-image {
+    max-height: 360px;
+    min-height: 180px;
+    background: rgba(26,15,10,0.14);
+}
+
+.admin-image-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    max-height: min(360px, 48vh);
+    overflow: hidden;
+}
+
+.admin-image-preview img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: min(330px, 44vh);
+    object-fit: contain;
+}
+
 .about-art-image {
     transform: none !important;
     transition: none;

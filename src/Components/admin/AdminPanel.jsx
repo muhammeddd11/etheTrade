@@ -3,8 +3,14 @@ import { signOut } from "firebase/auth";
 import {
   defaultLocale,
   getDefaultSiteContent,
+  mergeSiteContent,
+  resolveSiteContentAssets,
   supportedLanguages,
 } from "../../content/defaultSiteContent";
+import {
+  isCloudinaryConfigured,
+  uploadImageToCloudinary,
+} from "../../cloudinary/uploadImage";
 import { auth } from "../../firebase/firebase";
 import {
   deleteSiteContentOverride,
@@ -39,6 +45,41 @@ const titleize = (value) =>
 const getValueAtPath = (source, path) =>
   path.reduce((current, key) => current?.[key], source);
 
+const dedupeProducts = (content) => {
+  const productItems = content?.products?.items;
+
+  if (!Array.isArray(productItems)) {
+    return content;
+  }
+
+  const seen = new Set();
+  const items = productItems.filter((item) => {
+    if (!item?.imageNumber) {
+      return true;
+    }
+
+    if (seen.has(item.imageNumber)) {
+      return false;
+    }
+
+    seen.add(item.imageNumber);
+    return true;
+  });
+
+  return {
+    ...content,
+    products: {
+      ...content.products,
+      items,
+    },
+  };
+};
+
+const getEditableContent = (locale, override) =>
+  dedupeProducts(
+    resolveSiteContentAssets(mergeSiteContent(getDefaultSiteContent(locale), override)),
+  );
+
 const updateValueAtPath = (source, path, value) => {
   if (path.length === 0) {
     return value;
@@ -70,6 +111,32 @@ const createEmptyValue = (sample) => {
   }
 
   return "";
+};
+
+const isImageField = (label) => /image/i.test(label);
+
+const getNextProductNumber = (items) => {
+  const highestNumber = items.reduce((highest, item) => {
+    const value = Number(item?.imageNumber);
+    return Number.isFinite(value) ? Math.max(highest, value) : highest;
+  }, 0);
+
+  return String(highestNumber + 1);
+};
+
+const createProduct = (items, template = {}) => {
+  const imageNumber = getNextProductNumber(items);
+
+  return {
+    name: "New product",
+    image: "",
+    imageWidth: template.imageWidth || 600,
+    imageHeight: template.imageHeight || 410,
+    imageNumber,
+    showComingSoon: true,
+    summary: "New product",
+    details: "",
+  };
 };
 
 const NavigationEditor = ({ value, onChange }) => (
@@ -104,7 +171,16 @@ const NavigationEditor = ({ value, onChange }) => (
   </div>
 );
 
-const FieldEditor = ({ label, value, templateValue, onChange, depth = 0 }) => {
+const FieldEditor = ({
+  label,
+  value,
+  templateValue,
+  onChange,
+  onUploadImage,
+  uploadFieldKey,
+  uploadingFieldKey,
+  depth = 0,
+}) => {
   if (Array.isArray(value)) {
     const sample = value[0] || templateValue?.[0] || {};
 
@@ -147,6 +223,9 @@ const FieldEditor = ({ label, value, templateValue, onChange, depth = 0 }) => {
                 value={item}
                 templateValue={templateValue?.[index] || templateValue?.[0]}
                 depth={depth + 1}
+                onUploadImage={onUploadImage}
+                uploadFieldKey={`${uploadFieldKey}.${index}`}
+                uploadingFieldKey={uploadingFieldKey}
                 onChange={(nextItem) =>
                   onChange(
                     value.map((currentItem, itemIndex) =>
@@ -172,6 +251,9 @@ const FieldEditor = ({ label, value, templateValue, onChange, depth = 0 }) => {
             value={childValue}
             templateValue={templateValue?.[key]}
             depth={depth + 1}
+            onUploadImage={onUploadImage}
+            uploadFieldKey={`${uploadFieldKey}.${key}`}
+            uploadingFieldKey={uploadingFieldKey}
             onChange={(nextChildValue) =>
               onChange({ ...value, [key]: nextChildValue })
             }
@@ -197,30 +279,163 @@ const FieldEditor = ({ label, value, templateValue, onChange, depth = 0 }) => {
 
   const isLongText = String(value ?? "").length > 90;
   const isNumber = typeof value === "number";
+  const canUploadImage =
+    typeof value === "string" &&
+    isImageField(label) &&
+    !/alt|caption|loading|position|class/i.test(label);
+  const isUploading = uploadingFieldKey === uploadFieldKey;
 
   return (
-    <label className="block">
-      <span className="mb-1 block text-sm font-black uppercase">
-        {titleize(label)}
-      </span>
-      {isLongText ? (
-        <textarea
-          value={value ?? ""}
-          onChange={(event) => onChange(event.target.value)}
-          rows={4}
-          className="w-full resize-y border-2 border-[#8b7355] bg-[#e8dcc4] px-3 py-2 font-sans text-sm text-[#1a0f0a] outline-none focus:border-[#f2d58a]"
-        />
-      ) : (
-        <input
-          type={isNumber ? "number" : "text"}
-          value={value ?? ""}
-          onChange={(event) =>
-            onChange(isNumber ? Number(event.target.value) : event.target.value)
-          }
-          className="w-full border-2 border-[#8b7355] bg-[#e8dcc4] px-3 py-2 font-sans text-sm text-[#1a0f0a] outline-none focus:border-[#f2d58a]"
-        />
+    <div className="block">
+      <label className="block">
+        <span className="mb-1 block text-sm font-black uppercase">
+          {titleize(label)}
+        </span>
+        {isLongText ? (
+          <textarea
+            value={value ?? ""}
+            onChange={(event) => onChange(event.target.value)}
+            rows={4}
+            className="w-full resize-y border-2 border-[#8b7355] bg-[#e8dcc4] px-3 py-2 font-sans text-sm text-[#1a0f0a] outline-none focus:border-[#f2d58a]"
+          />
+        ) : (
+          <input
+            type={isNumber ? "number" : "text"}
+            value={value ?? ""}
+            onChange={(event) =>
+              onChange(isNumber ? Number(event.target.value) : event.target.value)
+            }
+            className="w-full border-2 border-[#8b7355] bg-[#e8dcc4] px-3 py-2 font-sans text-sm text-[#1a0f0a] outline-none focus:border-[#f2d58a]"
+          />
+        )}
+      </label>
+
+      {canUploadImage && (
+        <div className="mt-2 border border-[#8b7355] bg-[#e8dcc4]/70 p-3">
+          {value ? (
+            <div className="admin-image-preview mb-3 border border-[#8b7355] bg-[#1a0f0a]/10 p-2">
+              <img src={value} alt="" />
+            </div>
+          ) : null}
+          <label className="nav-button inline-flex cursor-pointer border-2 border-[#2a1a0f] px-3 py-2 text-xs font-black uppercase">
+            {isUploading ? "Uploading..." : "Upload Image"}
+            <input
+              type="file"
+              accept="image/*"
+              disabled={isUploading}
+              onChange={(event) => {
+                const [file] = event.target.files || [];
+                event.target.value = "";
+
+                if (file) {
+                  onUploadImage(file, onChange, uploadFieldKey);
+                }
+              }}
+              className="sr-only"
+            />
+          </label>
+        </div>
       )}
-    </label>
+    </div>
+  );
+};
+
+const ProductsEditor = ({
+  value,
+  templateValue,
+  onChange,
+  onUploadImage,
+  uploadingFieldKey,
+}) => {
+  const items = Array.isArray(value.items) ? value.items : [];
+  const templateProduct = templateValue?.items?.[0] || {};
+
+  return (
+    <div className="space-y-4">
+      <FieldEditor
+        label="title"
+        value={value.title}
+        templateValue={templateValue?.title}
+        onUploadImage={onUploadImage}
+        uploadFieldKey="products.title"
+        uploadingFieldKey={uploadingFieldKey}
+        onChange={(nextTitle) => onChange({ ...value, title: nextTitle })}
+      />
+      <FieldEditor
+        label="comingSoonLabel"
+        value={value.comingSoonLabel}
+        templateValue={templateValue?.comingSoonLabel}
+        onUploadImage={onUploadImage}
+        uploadFieldKey="products.comingSoonLabel"
+        uploadingFieldKey={uploadingFieldKey}
+        onChange={(nextLabel) =>
+          onChange({ ...value, comingSoonLabel: nextLabel })
+        }
+      />
+
+      <div className="border-2 border-[#8b7355] bg-[#d4c4a8]/60 p-3">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-sm font-black uppercase">Product Items</h3>
+          <button
+            type="button"
+            onClick={() =>
+              onChange({
+                ...value,
+                items: [...items, createProduct(items, templateProduct)],
+              })
+            }
+            className="nav-button border-2 border-[#2a1a0f] px-3 py-1.5 text-xs font-black uppercase"
+          >
+            Add Product
+          </button>
+        </div>
+
+        <div className="space-y-3">
+          {items.map((item, index) => (
+            <div
+              key={item.imageNumber || `product-${index}`}
+              className="border border-[#8b7355] bg-[#e8dcc4]/70 p-3"
+            >
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <p className="text-xs font-black uppercase">
+                  Product {item.imageNumber || index + 1}
+                </p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onChange({
+                      ...value,
+                      items: items.filter((_, itemIndex) => itemIndex !== index),
+                    })
+                  }
+                  className="nav-button border-2 border-red-900 bg-red-950 px-3 py-1.5 text-xs font-black uppercase text-red-50"
+                >
+                  Remove
+                </button>
+              </div>
+
+              <FieldEditor
+                label={`product ${index + 1}`}
+                value={item}
+                templateValue={templateValue?.items?.[index] || templateProduct}
+                depth={1}
+                onUploadImage={onUploadImage}
+                uploadFieldKey={`products.items.${index}`}
+                uploadingFieldKey={uploadingFieldKey}
+                onChange={(nextItem) =>
+                  onChange({
+                    ...value,
+                    items: items.map((currentItem, itemIndex) =>
+                      itemIndex === index ? nextItem : currentItem,
+                    ),
+                  })
+                }
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -231,6 +446,7 @@ const AdminPanel = ({ user }) => {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [isBusy, setIsBusy] = useState(false);
+  const [uploadingFieldKey, setUploadingFieldKey] = useState("");
 
   const activeLanguage = useMemo(
     () => supportedLanguages.find((language) => language.code === locale),
@@ -261,7 +477,7 @@ const AdminPanel = ({ user }) => {
       const override = await fetchSiteContentOverride(nextLocale);
 
       if (override) {
-        setContentDraft(override);
+        setContentDraft(getEditableContent(nextLocale, override));
         setStatus(`Loaded Firebase content for ${nextLocale.toUpperCase()}.`);
         return;
       }
@@ -304,6 +520,22 @@ const AdminPanel = ({ user }) => {
       setError(saveError.message);
     } finally {
       setIsBusy(false);
+    }
+  };
+
+  const handleImageUpload = async (file, onChange, fieldKey) => {
+    setError("");
+    setStatus("");
+    setUploadingFieldKey(fieldKey);
+
+    try {
+      const imageUrl = await uploadImageToCloudinary(file);
+      onChange(imageUrl);
+      setStatus("Image uploaded to Cloudinary. Save the section to publish it.");
+    } catch (uploadError) {
+      setError(uploadError.message);
+    } finally {
+      setUploadingFieldKey("");
     }
   };
 
@@ -429,6 +661,12 @@ const AdminPanel = ({ user }) => {
             Editing <strong>{activeLanguage?.label}</strong>. Choose a section,
             update its fields, then save that section.
           </p>
+          {!isCloudinaryConfigured() && (
+            <p className="mt-2 border border-[#8b7355] bg-[#e8dcc4]/70 p-3 text-sm font-bold">
+              Image uploads need Cloudinary env values:
+              {" "}VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET.
+            </p>
+          )}
         </section>
 
         <div className="grid gap-4 lg:grid-cols-[240px_minmax(0,1fr)]">
@@ -503,11 +741,22 @@ const AdminPanel = ({ user }) => {
                   value={activeSectionValue}
                   onChange={updateActiveSection}
                 />
+              ) : activeSection.id === "products" ? (
+                <ProductsEditor
+                  value={activeSectionValue}
+                  templateValue={activeSectionTemplate}
+                  onUploadImage={handleImageUpload}
+                  uploadingFieldKey={uploadingFieldKey}
+                  onChange={updateActiveSection}
+                />
               ) : (
                 <FieldEditor
                   label={activeSection.label}
                   value={activeSectionValue}
                   templateValue={activeSectionTemplate}
+                  onUploadImage={handleImageUpload}
+                  uploadFieldKey={activeSection.id}
+                  uploadingFieldKey={uploadingFieldKey}
                   onChange={updateActiveSection}
                 />
               )
